@@ -12,12 +12,12 @@ import (
 )
 
 type Server struct {
-	CredentialStore  CredentialStore
-	NonceValidator   NonceValidator
-	TimeStampSkew    time.Duration
-	LocaltimeOffset  time.Duration
-	Payload          string
-	AuthOption       *AuthOption
+	CredentialStore CredentialStore
+	NonceValidator  NonceValidator
+	TimeStampSkew   time.Duration
+	LocaltimeOffset time.Duration
+	Payload         string
+	AuthOption      *AuthOption
 }
 
 type AuthOption struct {
@@ -32,7 +32,7 @@ type CredentialStore interface {
 }
 
 type NonceValidator interface {
-	Validate(key, nonce string, ts int64) bool
+	Validate(key []byte, nonce string, ts int64) bool
 }
 
 // NewServer initializies a new Server.
@@ -82,7 +82,7 @@ func (s *Server) Authenticate(req *http.Request) (*Credential, error) {
 		// FIXME: logging error
 		return nil, errors.New("Failed to get Credential.")
 	}
-	if cred.Key == "" {
+	if cred.Key == nil {
 		return nil, errors.New("Invalid Credential.")
 	}
 
@@ -204,7 +204,7 @@ func (s *Server) AuthenticateBewit(req *http.Request) (*Credential, error) {
 		// FIXME: logging error
 		return nil, errors.New("Failed to get Credential.")
 	}
-	if cred.Key == "" {
+	if cred.Key == nil {
 		return nil, errors.New("Invalid Credential.")
 	}
 
@@ -336,7 +336,7 @@ func getClock(authOption *AuthOption) Clock {
 
 func removeBewitParam(u *url.URL) url.URL {
 	removedQuery := &url.Values{}
-	for key, _ := range u.Query() {
+	for key := range u.Query() {
 		if key == "bewit" {
 			continue
 		}

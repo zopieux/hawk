@@ -14,7 +14,7 @@ func (c *stubbedClock) Now(offset time.Duration) int64 {
 func TestBewitConfig_GetBewit(t *testing.T) {
 	c := &Credential{
 		ID:  "123456",
-		Key: "2983d45yun89q",
+		Key: []byte("2983d45yun89q"),
 		Alg: SHA256,
 	}
 
@@ -32,7 +32,7 @@ func TestBewitConfig_GetBewit(t *testing.T) {
 func TestBewitConfig_GetBewit2(t *testing.T) {
 	c := &Credential{
 		ID:  "123456",
-		Key: "2983d45yun89q",
+		Key: []byte("2983d45yun89q"),
 		Alg: SHA256,
 	}
 

@@ -5,7 +5,7 @@ import "time"
 
 type Credential struct {
 	ID  string
-	Key string
+	Key []byte
 	Alg Alg
 }
 

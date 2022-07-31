@@ -51,7 +51,7 @@ func (m *Mac) String() (string, error) {
 func (m *Mac) digest() ([]byte, error) {
 	s := getHash(m.Credential.Alg)
 
-	mac := hmac.New(s, []byte(m.Credential.Key))
+	mac := hmac.New(s, m.Credential.Key)
 	ns, err := m.normalized()
 	if err != nil {
 		return nil, err
@@ -74,7 +74,7 @@ func (tm *TsMac) String() string {
 func (tm *TsMac) digest() []byte {
 	s := getHash(tm.Credential.Alg)
 
-	mac := hmac.New(s, []byte(tm.Credential.Key))
+	mac := hmac.New(s, tm.Credential.Key)
 	ns := "hawk." + strconv.Itoa(headerVersion) + ".ts" + "\n" + strconv.FormatInt(tm.TimeStamp, 10) + "\n"
 	mac.Write([]byte(ns))
 

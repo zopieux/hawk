@@ -1,6 +1,7 @@
 package hawk
 
 import (
+	"bytes"
 	"testing"
 
 	"net/http"
@@ -9,8 +10,12 @@ import (
 
 type testCredentialStore struct {
 	ID  string
-	Key string
+	Key []byte
 	Alg Alg
+}
+
+func compareCred(a, b *Credential) bool {
+	return a.Alg == b.Alg && a.ID == b.ID && bytes.Compare(a.Key, b.Key) == 0
 }
 
 func (g *testCredentialStore) GetCredential(id string) (*Credential, error) {
@@ -26,7 +31,7 @@ func TestServer_Authenticate(t *testing.T) {
 
 	credentialStore := &testCredentialStore{
 		ID:  id,
-		Key: "werxhqb98rpaxn39848xrunpaw3489ruxnpa98w4rxn",
+		Key: []byte("werxhqb98rpaxn39848xrunpaw3489ruxnpa98w4rxn"),
 		Alg: SHA256,
 	}
 
@@ -55,7 +60,7 @@ func TestServer_Authenticate(t *testing.T) {
 		t.Errorf("return error, %s", err)
 	} else {
 		expect, _ := credentialStore.GetCredential(id)
-		if *act != *expect {
+		if !compareCred(act, expect) {
 			t.Error("Invalid return value")
 		}
 	}
@@ -90,7 +95,7 @@ func TestServer_Authenticate(t *testing.T) {
 		t.Errorf("return error, %s", err)
 	} else {
 		expect2, _ := credentialStore.GetCredential(id)
-		if *act2 != *expect2 {
+		if !compareCred(act2, expect2) {
 			t.Error("Invalid return value")
 		}
 	}
@@ -125,7 +130,7 @@ func TestServer_Authenticate(t *testing.T) {
 		t.Errorf("return error, %s", err)
 	} else {
 		expect3, _ := credentialStore.GetCredential(id)
-		if *act3 != *expect3 {
+		if !compareCred(act3, expect3) {
 			t.Error("Invalid return value")
 		}
 	}
@@ -133,7 +138,7 @@ func TestServer_Authenticate(t *testing.T) {
 	// specified payload
 	credentialStore4 := &testCredentialStore{
 		ID:  id,
-		Key: "werxhqb98rpaxn39848xrunpaw3489ruxnpa98w4rxn",
+		Key: []byte("werxhqb98rpaxn39848xrunpaw3489ruxnpa98w4rxn"),
 		Alg: SHA256,
 	}
 
@@ -165,7 +170,7 @@ func TestServer_Authenticate(t *testing.T) {
 		t.Errorf("return error, %s", err)
 	} else {
 		expect4, _ := credentialStore.GetCredential(id)
-		if *act4 != *expect4 {
+		if !compareCred(act4, expect4) {
 			t.Error("Invalid return value")
 		}
 	}
@@ -200,7 +205,7 @@ func TestServer_Authenticate(t *testing.T) {
 		t.Errorf("return error, %s", err)
 	} else {
 		expect5, _ := credentialStore.GetCredential(id)
-		if *act5 != *expect5 {
+		if !compareCred(act5, expect5) {
 			t.Error("Invalid return value")
 		}
 	}
@@ -209,7 +214,7 @@ func TestServer_Authenticate(t *testing.T) {
 
 type errorNonceValidator struct{}
 
-func (n *errorNonceValidator) Validate(key, nonce string, ts int64) bool {
+func (n *errorNonceValidator) Validate(key []byte, nonce string, ts int64) bool {
 	return false
 }
 
@@ -218,7 +223,7 @@ func TestServer_Authenticate_Fail(t *testing.T) {
 
 	credentialStore := &testCredentialStore{
 		ID:  id,
-		Key: "werxhqb98rpaxn39848xrunpaw3489ruxnpa98w4rxn",
+		Key: []byte("werxhqb98rpaxn39848xrunpaw3489ruxnpa98w4rxn"),
 		Alg: SHA256,
 	}
 
@@ -255,7 +260,7 @@ func TestServer_Authenticate_Fail(t *testing.T) {
 
 	s1 := &Server{
 		CredentialStore: credentialStore,
-		NonceValidator:   &errorNonceValidator{},
+		NonceValidator:  &errorNonceValidator{},
 	}
 
 	_, err = s1.Authenticate(r1)
@@ -360,7 +365,7 @@ func TestServer_AuthenticateBewit(t *testing.T) {
 
 	credentialStore := &testCredentialStore{
 		ID:  id,
-		Key: "werxhqb98rpaxn39848xrunpaw3489ruxnpa98w4rxn",
+		Key: []byte("werxhqb98rpaxn39848xrunpaw3489ruxnpa98w4rxn"),
 		Alg: SHA256,
 	}
 
@@ -445,7 +450,7 @@ func TestServer_AuthenticateBewit_Fail(t *testing.T) {
 
 	credentialStore := &testCredentialStore{
 		ID:  id,
-		Key: "werxhqb98rpaxn39848xrunpaw3489ruxnpa98w4rxn",
+		Key: []byte("werxhqb98rpaxn39848xrunpaw3489ruxnpa98w4rxn"),
 		Alg: SHA256,
 	}
 
@@ -619,7 +624,7 @@ func TestServer_AuthenticateBewit_Fail(t *testing.T) {
 func TestServer_Header(t *testing.T) {
 	credentialStore := &testCredentialStore{
 		ID:  "123456",
-		Key: "werxhqb98rpaxn39848xrunpaw3489ruxnpa98w4rxn",
+		Key: []byte("werxhqb98rpaxn39848xrunpaw3489ruxnpa98w4rxn"),
 		Alg: SHA256,
 	}
 

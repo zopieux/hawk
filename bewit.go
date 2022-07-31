@@ -16,7 +16,7 @@ type BewitConfig struct {
 func NewBewitConfig(c *Credential, ttl time.Duration) *BewitConfig {
 	return &BewitConfig{
 		Credential: c,
-		Ttl: ttl,
+		Ttl:        ttl,
 	}
 }
 
@@ -30,7 +30,7 @@ func (b *BewitConfig) GetBewit(url string, clock Clock) string {
 	if b.Credential == nil {
 		return ""
 	}
-	if b.Credential.ID == "" || b.Credential.Key == "" || b.Credential.Alg == 0 {
+	if b.Credential.ID == "" || b.Credential.Key == nil || b.Credential.Alg == 0 {
 		return ""
 	}
 

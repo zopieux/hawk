@@ -14,7 +14,7 @@ type Client struct {
 func NewClient(c *Credential, o *Option) *Client {
 	return &Client{
 		Credential: c,
-		Option: o,
+		Option:     o,
 	}
 }
 

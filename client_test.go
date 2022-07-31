@@ -15,7 +15,7 @@ func TestClient_Header(t *testing.T) {
 	c1 := NewClient(
 		&Credential{
 			ID:  "test-id",
-			Key: "test-key",
+			Key: []byte("test-key"),
 			Alg: SHA256,
 		},
 		&Option{
@@ -51,7 +51,7 @@ func TestClient_Header(t *testing.T) {
 	c2 := NewClient(
 		&Credential{
 			ID:  "test-id",
-			Key: "test-key",
+			Key: []byte("test-key"),
 			Alg: SHA256,
 		},
 		&Option{
@@ -92,7 +92,7 @@ func TestClient_Header(t *testing.T) {
 	c3 := NewClient(
 		&Credential{
 			ID:  "test-id",
-			Key: "test-key",
+			Key: []byte("test-key"),
 			Alg: SHA256,
 		},
 		&Option{
@@ -160,7 +160,7 @@ func TestClient_Authenticate(t *testing.T) {
 	c := NewClient(
 		&Credential{
 			ID:  "123456",
-			Key: "werxhqb98rpaxn39848xrunpaw3489ruxnpa98w4rxn",
+			Key: []byte("werxhqb98rpaxn39848xrunpaw3489ruxnpa98w4rxn"),
 			Alg: SHA256,
 		},
 		&Option{
@@ -189,7 +189,7 @@ func TestClient_Authenticate(t *testing.T) {
 	c1 := NewClient(
 		&Credential{
 			ID:  "123456",
-			Key: "werxhqb98rpaxn39848xrunpaw3489ruxnpa98w4rxn",
+			Key: []byte("werxhqb98rpaxn39848xrunpaw3489ruxnpa98w4rxn"),
 			Alg: SHA256,
 		},
 		&Option{
@@ -231,7 +231,7 @@ func TestClient_Authenticate_Fail(t *testing.T) {
 	c2 := NewClient(
 		&Credential{
 			ID:  "123456",
-			Key: "some-key",
+			Key: []byte("some-key"),
 			Alg: SHA256,
 		},
 		&Option{
@@ -262,7 +262,7 @@ func TestClient_Authenticate_Fail(t *testing.T) {
 	c3 := NewClient(
 		&Credential{
 			ID:  "123456",
-			Key: "werxhqb98rpaxn39848xrunpaw3489ruxnpa98w4rxn",
+			Key: []byte("werxhqb98rpaxn39848xrunpaw3489ruxnpa98w4rxn"),
 			Alg: SHA256,
 		},
 		&Option{

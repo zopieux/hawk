@@ -2,7 +2,7 @@ package hawk_test
 
 import (
 	"fmt"
-	"github.com/hiyosi/hawk"
+	"github.com/zopieux/hawk"
 	"time"
 )
 
@@ -12,7 +12,7 @@ func ExampleClient_Header() {
 	c := &hawk.Client{
 		Credential: &hawk.Credential{
 			ID:  "123456",
-			Key: "test-key",
+			Key: []byte("test-key"),
 			Alg: hawk.SHA256,
 		},
 		Option: &hawk.Option{

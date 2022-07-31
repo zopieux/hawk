@@ -1,3 +1,3 @@
-module github.com/hiyosi/hawk
+module github.com/zopieux/hawk
 
 go 1.15
